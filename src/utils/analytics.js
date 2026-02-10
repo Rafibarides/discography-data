@@ -80,6 +80,24 @@ export function getTopWordsAcrossAll(lyrics) {
     .map(([word, count]) => ({ word, count }));
 }
 
+export function getWordFrequencyMap(lyrics) {
+  const freq = {};
+  lyrics.forEach((l) => {
+    if (!l.lyrics_text) return;
+    const words = l.lyrics_text
+      .toLowerCase()
+      .replace(/[^a-z'\s-]/g, '')
+      .split(/\s+/)
+      .filter((w) => w.length > 1);
+    words.forEach((w) => {
+      if (!STOP_WORDS.has(w)) {
+        freq[w] = (freq[w] || 0) + 1;
+      }
+    });
+  });
+  return freq;
+}
+
 export function buildDatabase(raw) {
   if (!raw) return null;
 
@@ -125,6 +143,7 @@ export function buildDatabase(raw) {
   const labels = raw.labels || [];
   const lyricCategories = raw.lyric_categories || [];
   const perspectives = raw.perspectives || [];
+  const videos = raw.videos || [];
 
   const songIndex = indexBy(songs, 'song_id');
   const releaseIndex = indexBy(releases, 'release_id');
@@ -180,6 +199,14 @@ export function buildDatabase(raw) {
     };
   });
 
+  // Build video lookup by song_id
+  const videoIndex = {};
+  videos.forEach((v) => {
+    if (v.song_id && v.video_url) {
+      videoIndex[v.song_id] = v.video_url;
+    }
+  });
+
   const enrichedSongs = songs.map((song) => {
     const release = releaseIndex[song.release_id];
     const category = categoryIndex[song.lyrics_category_id];
@@ -206,6 +233,7 @@ export function buildDatabase(raw) {
       lyrics_text: lyric ? lyric.lyrics_text : '',
       credits,
       cover_art: cover,
+      video_url: videoIndex[song.song_id] || null,
     };
   });
 
@@ -417,6 +445,24 @@ export function applyFilters(songs, filters) {
     if (filters.people && filters.people.length > 0) {
       const songPersonIds = song.credits.map((c) => c.person_id);
       if (!filters.people.some((pid) => songPersonIds.includes(pid))) return false;
+    }
+    if (filters.vocalists && filters.vocalists.length > 0) {
+      const vocalistIds = (song.credits || [])
+        .filter((c) => c.role?.name === 'featured_vocals')
+        .map((c) => c.person_id);
+      if (!filters.vocalists.some((pid) => vocalistIds.includes(pid))) return false;
+    }
+    if (filters.mixers && filters.mixers.length > 0) {
+      const mixerIds = (song.credits || [])
+        .filter((c) => c.role?.name === 'mixing')
+        .map((c) => c.person_id);
+      if (!filters.mixers.some((pid) => mixerIds.includes(pid))) return false;
+    }
+    if (filters.masters && filters.masters.length > 0) {
+      const masterIds = (song.credits || [])
+        .filter((c) => c.role?.name === 'mastering')
+        .map((c) => c.person_id);
+      if (!filters.masters.some((pid) => masterIds.includes(pid))) return false;
     }
     if (filters.searchQuery) {
       const q = filters.searchQuery.toLowerCase();

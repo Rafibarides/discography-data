@@ -59,7 +59,8 @@ function doGet(e) {
 var SHEET_NAMES = [
   'songs', 'releases', 'people', 'song_credits', 'credit_roles',
   'lyrics', 'song_stats', 'artwork', 'release_art', 'art_credits',
-  'art_types', 'distributors', 'labels', 'lyric_categories', 'perspectives'
+  'art_types', 'distributors', 'labels', 'lyric_categories', 'perspectives',
+  'videos'
 ];
 
 function getAllData() {
@@ -163,6 +164,9 @@ var SCHEMAS = {
   ],
   'perspectives': [
     'perspective_id', 'name'
+  ],
+  'videos': [
+    'video_id', 'song_id', 'video_url'
   ]
 };
 

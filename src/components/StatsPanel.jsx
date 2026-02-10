@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { CATEGORY_COLORS } from '../utils/constants';
-import { getTopWordsAcrossAll } from '../utils/analytics';
-import { formatDuration } from '../utils/helpers';
+import { getTopWordsAcrossAll, getWordFrequencyMap } from '../utils/analytics';
+import { formatDuration, formatLongDuration } from '../utils/helpers';
 import './StatsPanel.css';
 
 export default function StatsPanel({ db, filteredSongs, onSongSelect, onPersonSelect }) {
@@ -110,11 +110,53 @@ export default function StatsPanel({ db, filteredSongs, onSongSelect, onPersonSe
     };
   }, [filteredSongs, db]);
 
-  const topWords = useMemo(() => {
-    const relevantLyrics = filteredSongs
-      .filter((s) => s.lyrics_text)
-      .map((s) => ({ song_id: s.song_id, lyrics_text: s.lyrics_text }));
-    return getTopWordsAcrossAll(relevantLyrics);
+  const { topWords, leastUsedWords, longestWords } = useMemo(() => {
+    const songsWithLyrics = filteredSongs.filter((s) => s.lyrics_text);
+    const relevantLyrics = songsWithLyrics.map((s) => ({ song_id: s.song_id, lyrics_text: s.lyrics_text }));
+
+    const top = getTopWordsAcrossAll(relevantLyrics);
+    const freq = getWordFrequencyMap(relevantLyrics);
+    const entries = Object.entries(freq);
+
+    // Build word -> songs map for lookups
+    const wordToSongs = {};
+    songsWithLyrics.forEach((s) => {
+      const words = s.lyrics_text
+        .toLowerCase()
+        .replace(/[^a-z'\s-]/g, '')
+        .split(/\s+/)
+        .filter((w) => w.length > 1);
+      const unique = new Set(words);
+      unique.forEach((w) => {
+        if (!wordToSongs[w]) wordToSongs[w] = [];
+        wordToSongs[w].push(s);
+      });
+    });
+
+    // Least used: find the minimum count and collect all words tied at that count
+    const sorted = [...entries].sort((a, b) => a[1] - b[1]);
+    const least = [];
+    const minCount = sorted.length > 0 ? sorted[0][1] : null;
+    for (const [word, count] of sorted) {
+      if (count !== minCount) break;
+      least.push({ word, count, songs: wordToSongs[word] || [] });
+    }
+
+    // Longest words: find the max length, collect ties
+    const byLength = [...entries].sort((a, b) => b[0].length - a[0].length);
+    const longest = [];
+    let lengthPositions = 0;
+    let lastLength = null;
+    for (const [word, count] of byLength) {
+      if (word.length !== lastLength) {
+        if (lengthPositions >= 1) break;
+        lengthPositions++;
+        lastLength = word.length;
+      }
+      longest.push({ word, count, length: word.length, songs: wordToSongs[word] || [] });
+    }
+
+    return { topWords: top, leastUsedWords: least, longestWords: longest };
   }, [filteredSongs]);
 
   if (!stats) {
@@ -127,7 +169,7 @@ export default function StatsPanel({ db, filteredSongs, onSongSelect, onPersonSe
         <StatCard label="Total Songs" value={stats.total} />
         <StatCard label="Total Words" value={stats.totalWords.toLocaleString()} />
         <StatCard label="Avg Words/Song" value={stats.avgWords} />
-        <StatCard label="Total Runtime" value={formatDuration(stats.totalDuration)} />
+        <StatCard label="Total Runtime" value={formatLongDuration(stats.totalDuration)} />
         <StatCard label="Avg Duration" value={formatDuration(stats.avgDuration)} />
         <StatCard label="Avg BPM" value={stats.avgBpm} />
         <StatCard label="Explicit" value={stats.explicit} sub={`${pct(stats.explicit, stats.total)}%`} />
@@ -188,6 +230,28 @@ export default function StatsPanel({ db, filteredSongs, onSongSelect, onPersonSe
             ))}
           </div>
         </div>
+
+        {leastUsedWords.length > 0 && (
+          <WordPreviewSection
+            title="Least Used Words"
+            words={leastUsedWords}
+            variant="least"
+            subKey="count"
+            subLabel=""
+            onSongSelect={onSongSelect}
+          />
+        )}
+
+        {longestWords.length > 0 && (
+          <WordPreviewSection
+            title={`Longest Word${longestWords.length > 1 ? 's' : ''}`}
+            words={longestWords}
+            variant="longest"
+            subKey="length"
+            subLabel=" chars"
+            onSongSelect={onSongSelect}
+          />
+        )}
 
         <div className="stats-section">
           <h4 className="stats-section-title">Extremes</h4>
@@ -290,6 +354,82 @@ function ExtremeCard({ label, song, value, onClick }) {
       <span className="extreme-title">{song.title}</span>
       <span className="extreme-value">{value}</span>
     </button>
+  );
+}
+
+function WordPreviewSection({ title, words, variant, subKey, subLabel, onSongSelect }) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const preview = words.slice(0, 6);
+  const hasMore = words.length > 6;
+
+  return (
+    <div className="stats-section">
+      <h4 className="stats-section-title">{title} ({words.length})</h4>
+      <div className="word-tags">
+        {preview.map((tw) => (
+          <WordTag
+            key={tw.word}
+            tw={tw}
+            variant={variant}
+            subKey={subKey}
+            subLabel={subLabel}
+            onSongSelect={onSongSelect}
+          />
+        ))}
+        {hasMore && (
+          <button className="word-tag-more" onClick={() => setModalOpen(true)}>
+            +{words.length - 6} more
+          </button>
+        )}
+      </div>
+      {modalOpen && (
+        <div className="modal-overlay" onClick={() => setModalOpen(false)}>
+          <div className="modal-box word-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>{title}</h3>
+              <button className="modal-close" onClick={() => setModalOpen(false)}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div className="modal-body word-modal-body">
+              <div className="word-tags">
+                {words.map((tw) => (
+                  <WordTag
+                    key={tw.word}
+                    tw={tw}
+                    variant={variant}
+                    subKey={subKey}
+                    subLabel={subLabel}
+                    onSongSelect={(s) => { setModalOpen(false); onSongSelect(s); }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function WordTag({ tw, variant, subKey, subLabel, onSongSelect }) {
+  const songTitle = tw.songs?.length
+    ? tw.songs.map((s) => s.title).join(', ')
+    : '';
+  const clickable = tw.songs?.length === 1;
+
+  return (
+    <span
+      className={`word-tag ${variant} ${clickable ? 'clickable' : ''}`}
+      title={songTitle}
+      onClick={clickable ? () => onSongSelect(tw.songs[0]) : undefined}
+    >
+      <span className="word-tag-text">{tw.word}</span>
+      <span className="word-tag-count">{tw[subKey]}{subLabel}</span>
+    </span>
   );
 }
 

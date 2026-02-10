@@ -43,6 +43,14 @@ export function formatDuration(seconds) {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
+export function formatLongDuration(seconds) {
+  if (!seconds || seconds <= 0) return '--';
+  const h = Math.floor(seconds / 3600);
+  const m = Math.round((seconds % 3600) / 60);
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}m`;
+}
+
 export function formatDate(dateStr) {
   if (!dateStr) return '';
   const d = new Date(dateStr);

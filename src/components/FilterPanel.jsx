@@ -205,8 +205,8 @@ export default function FilterPanel({
                   <Chip
                     key={p.person_id}
                     label={p.name}
-                    active={filters.people.includes(p.person_id)}
-                    onClick={() => toggleArrayFilter('people', p.person_id)}
+                    active={(filters.vocalists || []).includes(p.person_id)}
+                    onClick={() => toggleArrayFilter('vocalists', p.person_id)}
                     onNameClick={() => onPersonSelect(p.person_id)}
                     count={count}
                   />
@@ -225,8 +225,8 @@ export default function FilterPanel({
                   <Chip
                     key={p.person_id}
                     label={p.name}
-                    active={filters.people.includes(p.person_id)}
-                    onClick={() => toggleArrayFilter('people', p.person_id)}
+                    active={(filters.mixers || []).includes(p.person_id)}
+                    onClick={() => toggleArrayFilter('mixers', p.person_id)}
                     onNameClick={() => onPersonSelect(p.person_id)}
                     count={count}
                   />
@@ -245,8 +245,8 @@ export default function FilterPanel({
                   <Chip
                     key={p.person_id}
                     label={p.name}
-                    active={filters.people.includes(p.person_id)}
-                    onClick={() => toggleArrayFilter('people', p.person_id)}
+                    active={(filters.masters || []).includes(p.person_id)}
+                    onClick={() => toggleArrayFilter('masters', p.person_id)}
                     onNameClick={() => onPersonSelect(p.person_id)}
                     count={count}
                   />

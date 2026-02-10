@@ -220,6 +220,24 @@ export default function SongDetail({ song, db, onClose, onPersonSelect }) {
               )}
             </div>
           </div>
+
+          {song.video_url && (() => {
+            const match = song.video_url.match(/(?:v=|\/embed\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            const videoId = match ? match[1] : null;
+            return videoId ? (
+              <div className="detail-video">
+                <h4 className="detail-section-title">Video</h4>
+                <div className="detail-video-player">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title={`${song.title} video`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            ) : null;
+          })()}
         </div>
       </div>
     </div>

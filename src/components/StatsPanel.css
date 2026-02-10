@@ -266,3 +266,74 @@
   color: var(--text-tertiary);
   font-style: italic;
 }
+
+.word-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.word-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+}
+
+.word-tag.least {
+  background: rgba(255, 107, 138, 0.1);
+  border: 1px solid rgba(255, 107, 138, 0.25);
+}
+
+.word-tag.longest {
+  background: rgba(74, 123, 255, 0.1);
+  border: 1px solid rgba(74, 123, 255, 0.25);
+}
+
+.word-tag-text {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.word-tag.clickable {
+  cursor: pointer;
+}
+
+.word-tag.clickable:hover {
+  filter: brightness(1.3);
+}
+
+.word-tag-count {
+  color: var(--text-tertiary);
+  font-size: 0.7rem;
+}
+
+.word-tag-more {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-primary);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.word-tag-more:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.word-modal {
+  max-width: 560px;
+  width: 92vw;
+}
+
+.word-modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 16px;
+}

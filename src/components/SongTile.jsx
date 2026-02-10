@@ -22,7 +22,12 @@ export default function SongTile({ song, color, size, onClick }) {
       onClick={onClick}
       title={`${song.title} (${song.year})`}
     >
-      {coverUrl && <span className="tile-overlay" />}
+      {coverUrl && (
+        <span
+          className="tile-overlay"
+          style={{ backgroundColor: `${color.bg}CC` }}
+        />
+      )}
       <span className="tile-indicator" style={{ backgroundColor: color.bg }} />
       <span className="tile-title">{song.title}</span>
       {song.duration_sec > 0 && (

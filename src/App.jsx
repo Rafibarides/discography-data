@@ -25,6 +25,9 @@ const INITIAL_FILTERS = {
   distributors: [],
   labels: [],
   people: [],
+  mixers: [],
+  masters: [],
+  vocalists: [],
   isPublished: null,
   isExplicit: null,
   hasVideo: null,
@@ -37,7 +40,7 @@ const INITIAL_FILTERS = {
 const INITIAL_DISPLAY = {
   colorBy: 'category',
   sizeBy: 'none',
-  groupBy: 'none',
+  groupBy: 'year',
 };
 
 export default function App() {
