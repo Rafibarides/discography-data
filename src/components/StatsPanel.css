@@ -1,0 +1,268 @@
+.stats-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+.stat-sub {
+  font-size: 0.7rem;
+  color: var(--accent-blue);
+  margin-top: 1px;
+}
+
+.stats-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.stats-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.stats-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bar-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  min-width: 120px;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bar-track {
+  flex: 1;
+  height: 10px;
+  background: var(--bg-tertiary);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  min-width: 3px;
+  transition: width var(--transition-normal);
+}
+
+.bar-count {
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  min-width: 22px;
+  text-align: right;
+  font-weight: 500;
+}
+
+.bar-pct {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  min-width: 28px;
+  text-align: right;
+}
+
+.people-rank {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.people-rank-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: opacity var(--transition-fast);
+}
+
+.people-rank-row:hover {
+  opacity: 0.75;
+}
+
+.pr-name {
+  font-size: 0.8rem;
+  color: var(--accent-blue);
+  min-width: 120px;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pr-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pr-bar-fill {
+  height: 100%;
+  background: var(--accent-blue);
+  border-radius: 4px;
+  min-width: 3px;
+}
+
+.pr-count {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  min-width: 20px;
+  text-align: right;
+}
+
+.top-words-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.top-word-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tw-rank {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  min-width: 18px;
+  text-align: right;
+}
+
+.tw-word {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  min-width: 80px;
+  font-weight: 500;
+}
+
+.tw-bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.tw-bar-fill {
+  height: 100%;
+  background: var(--accent-purple);
+  border-radius: 3px;
+}
+
+.tw-count {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  min-width: 28px;
+  text-align: right;
+}
+
+.extremes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.extreme-card {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  text-align: left;
+}
+
+.extreme-card:hover {
+  background: var(--bg-hover);
+}
+
+.extreme-label {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.extreme-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+.extreme-value {
+  font-size: 0.75rem;
+  color: var(--accent-blue);
+  margin-top: 1px;
+}
+
+.stats-empty {
+  text-align: center;
+  color: var(--text-tertiary);
+  padding: 40px;
+}
+
+.no-data-text {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  font-style: italic;
+}

@@ -1,0 +1,262 @@
+.detail-modal {
+  max-width: 820px;
+  width: 95%;
+  max-height: 90vh;
+}
+
+.detail-header-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.detail-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  flex-wrap: wrap;
+}
+
+.detail-year {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.detail-release {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.detail-release-type {
+  color: var(--text-tertiary);
+}
+
+.detail-category {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.detail-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-body {
+  padding: 16px 20px 20px;
+}
+
+.detail-cover-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.detail-cover-img {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border-primary);
+}
+
+.detail-cover-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 4px;
+}
+
+.cover-type {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+.cover-credit {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-transform: capitalize;
+}
+
+.detail-columns {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+}
+
+.detail-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.detail-properties {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prop-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 0;
+}
+
+.prop-label {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.prop-value {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.prop-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.prop-indicator.green {
+  background: var(--accent-green);
+  box-shadow: 0 0 6px rgba(120, 214, 114, 0.5);
+}
+
+.prop-indicator.red {
+  background: var(--accent-pink);
+  box-shadow: 0 0 6px rgba(255, 107, 138, 0.5);
+}
+
+.prop-indicator.dim {
+  background: var(--text-tertiary);
+}
+
+.detail-credits {
+  border-top: 1px solid var(--border-primary);
+  padding-top: 12px;
+}
+
+.credit-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+
+.credit-role {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.credit-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.credit-name {
+  font-size: 0.8rem;
+  color: var(--accent-blue);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  transition: opacity var(--transition-fast);
+}
+
+.credit-name:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+.credit-detail {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+}
+
+.detail-top-words {
+  border-top: 1px solid var(--border-primary);
+  padding-top: 12px;
+}
+
+.top-words-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.top-word-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+
+.top-word-rank {
+  width: 16px;
+  text-align: right;
+  color: var(--text-tertiary);
+  font-size: 0.7rem;
+}
+
+.top-word-text {
+  flex: 1;
+  color: var(--text-primary);
+}
+
+.top-word-count {
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+}
+
+.detail-right {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.detail-lyrics {
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.no-data {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+@media (max-width: 700px) {
+  .detail-columns {
+    grid-template-columns: 1fr;
+  }
+}

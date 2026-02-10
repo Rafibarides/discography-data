@@ -1,0 +1,249 @@
+.artwork-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.artwork-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.artwork-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.artwork-count {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.artwork-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.artwork-type-chips {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.art-chip {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.art-chip:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.art-chip.active {
+  background: var(--bg-hover);
+  border-color: var(--accent-blue);
+  color: var(--text-primary);
+}
+
+.artwork-credit-select {
+  height: 28px;
+  font-size: 0.8rem;
+}
+
+.artwork-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.artwork-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.artwork-card:hover {
+  border-color: var(--border-secondary);
+  transform: translateY(-2px);
+}
+
+.artwork-card.selected {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 12px rgba(74, 123, 255, 0.25);
+}
+
+.artwork-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.artwork-placeholder {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+}
+
+.artwork-info {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.artwork-release-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artwork-type-label {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  text-transform: capitalize;
+}
+
+.artwork-year {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+}
+
+/* Detail panel (shown below grid when an artwork is selected) */
+
+.artwork-detail-panel {
+  display: flex;
+  gap: 20px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  margin-top: 4px;
+}
+
+.artwork-detail-img-wrap {
+  flex-shrink: 0;
+}
+
+.artwork-detail-img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-primary);
+}
+
+.artwork-detail-placeholder {
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+}
+
+.artwork-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+}
+
+.artwork-detail-info h4 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.ad-release-type {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+.ad-type {
+  font-size: 0.8rem;
+  color: var(--accent-blue);
+  text-transform: capitalize;
+}
+
+.ad-desc {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+.ad-credits {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-primary);
+}
+
+.ad-credits-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+}
+
+.ad-credit-person {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  cursor: pointer;
+  text-align: left;
+  width: fit-content;
+  transition: opacity var(--transition-fast);
+}
+
+.ad-credit-person:hover {
+  opacity: 0.7;
+}
+
+.ad-credit-role {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-transform: capitalize;
+  min-width: 90px;
+}
+
+.ad-credit-name {
+  font-size: 0.8rem;
+  color: var(--accent-blue);
+}
+
+@media (max-width: 600px) {
+  .artwork-detail-panel {
+    flex-direction: column;
+    align-items: center;
+  }
+}

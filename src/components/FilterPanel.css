@@ -1,0 +1,234 @@
+.filter-panel {
+  position: relative;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-primary);
+  transition: width var(--transition-normal);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-panel.open {
+  width: 260px;
+}
+
+.filter-panel.closed {
+  width: 32px;
+}
+
+.filter-toggle {
+  position: absolute;
+  top: 8px;
+  right: -14px;
+  width: 28px;
+  height: 28px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.filter-toggle:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.filter-content {
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.filter-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.filter-reset {
+  font-size: 0.75rem;
+  color: var(--accent-blue);
+}
+
+.filter-section {
+  padding: 8px 0;
+  border-top: 1px solid var(--border-primary);
+}
+
+.filter-section:first-of-type {
+  border-top: none;
+}
+
+.filter-section-title {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.filter-chips.scrollable {
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.filter-chip.small {
+  padding: 2px 6px;
+  font-size: 0.7rem;
+}
+
+.filter-chip:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.filter-chip.active {
+  background: var(--bg-hover);
+  border-color: var(--text-tertiary);
+  color: var(--text-primary);
+}
+
+.chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip-label.clickable-name {
+  cursor: pointer;
+}
+
+.chip-label.clickable-name:hover {
+  text-decoration: underline;
+}
+
+.chip-sub {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+}
+
+.chip-count {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  margin-left: 2px;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.filter-row label {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  min-width: 40px;
+}
+
+.filter-row select {
+  flex: 1;
+  height: 28px;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  min-width: 40px;
+}
+
+.filter-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.toggle-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.toggle-btns {
+  display: flex;
+  gap: 2px;
+}
+
+.toggle-btn {
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-tertiary);
+  transition: all var(--transition-fast);
+}
+
+.toggle-btn:hover {
+  color: var(--text-secondary);
+}
+
+.toggle-btn.active.yes {
+  background: rgba(120, 214, 114, 0.15);
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+.toggle-btn.active.no {
+  background: rgba(255, 107, 138, 0.15);
+  border-color: var(--accent-pink);
+  color: var(--accent-pink);
+}
