@@ -137,7 +137,7 @@ export default function HeatmapView({ songs, allSongs, db, onSongSelect }) {
     return `0 0 ${s}px ${color}90, 0 0 ${s * 2}px ${color}30`;
   };
 
-  const cols = Math.max(8, Math.ceil(Math.sqrt(sorted.length)));
+  const cols = Math.max(14, Math.ceil(Math.sqrt(sorted.length) * 1.9));
 
   const handleMouseEnter = (e, song) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -223,7 +223,7 @@ export default function HeatmapView({ songs, allSongs, db, onSongSelect }) {
       <div
         className="hm-grid"
         ref={gridRef}
-        style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
+        style={{ gridTemplateColumns: `repeat(${cols}, var(--hm-cell-size))` }}
         onMouseLeave={() => setTooltip(null)}
       >
         {sorted.map((song) => {

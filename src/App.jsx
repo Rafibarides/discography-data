@@ -22,6 +22,8 @@ const INITIAL_FILTERS = {
   categories: [],
   perspectives: [],
   keys: [],
+  distributors: [],
+  labels: [],
   people: [],
   isPublished: null,
   isExplicit: null,

@@ -126,48 +126,56 @@ export default function ArtworkView({ db, onPersonSelect }) {
       </div>
 
       {selected && (
-        <div className="artwork-detail-panel">
-          <div className="artwork-detail-img-wrap">
-            {selected.image_url ? (
-              <img
-                src={selected.image_url}
-                alt={selected.description}
-                className="artwork-detail-img"
-              />
-            ) : (
-              <div className="artwork-detail-placeholder">No image available</div>
-            )}
-          </div>
-          <div className="artwork-detail-info">
-            <h4>{selected.release?.title || selected.description}</h4>
-            {selected.release && (
-              <span className="ad-release-type">
-                {selected.release.release_type} / {selected.release.year}
+        <div className="artwork-overlay" onClick={() => setSelected(null)}>
+          <div className="artwork-detail-panel" onClick={(e) => e.stopPropagation()}>
+            <button className="artwork-detail-close" onClick={() => setSelected(null)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+            <div className="artwork-detail-img-wrap">
+              {selected.image_url ? (
+                <img
+                  src={selected.image_url}
+                  alt={selected.description}
+                  className="artwork-detail-img"
+                />
+              ) : (
+                <div className="artwork-detail-placeholder">No image available</div>
+              )}
+            </div>
+            <div className="artwork-detail-info">
+              <h4>{selected.release?.title || selected.description}</h4>
+              {selected.release && (
+                <span className="ad-release-type">
+                  {selected.release.release_type} / {selected.release.year}
+                </span>
+              )}
+              <span className="ad-type">
+                {ART_TYPE_LABELS[selected.art_type_name] || selected.art_type_name}
               </span>
-            )}
-            <span className="ad-type">
-              {ART_TYPE_LABELS[selected.art_type_name] || selected.art_type_name}
-            </span>
-            {selected.description && (
-              <span className="ad-desc">{selected.description}</span>
-            )}
-            {(selected.credits || []).length > 0 && (
-              <div className="ad-credits">
-                <span className="ad-credits-label">Credits</span>
-                {selected.credits.map((c, i) => (
-                  <button
-                    key={i}
-                    className="ad-credit-person"
-                    onClick={() => c.person && onPersonSelect(c.person.person_id)}
-                  >
-                    <span className="ad-credit-role">
-                      {(c.role?.name || '').replace(/_/g, ' ')}
-                    </span>
-                    <span className="ad-credit-name">{c.person?.name || ''}</span>
-                  </button>
-                ))}
-              </div>
-            )}
+              {selected.description && (
+                <span className="ad-desc">{selected.description}</span>
+              )}
+              {(selected.credits || []).length > 0 && (
+                <div className="ad-credits">
+                  <span className="ad-credits-label">Credits</span>
+                  {selected.credits.map((c, i) => (
+                    <button
+                      key={i}
+                      className="ad-credit-person"
+                      onClick={() => c.person && onPersonSelect(c.person.person_id)}
+                    >
+                      <span className="ad-credit-role">
+                        {(c.role?.name || '').replace(/_/g, ' ')}
+                      </span>
+                      <span className="ad-credit-name">{c.person?.name || ''}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

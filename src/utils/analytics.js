@@ -136,6 +136,8 @@ export function buildDatabase(raw) {
   const lyricsIndex = indexBy(lyrics, 'song_id');
   const artworkIndex = indexBy(artwork, 'art_id');
   const artTypeIndex = indexBy(artTypes, 'art_type_id');
+  const distributorIndex = indexBy(distributors, 'distributor_id');
+  const labelIndex = indexBy(labels, 'label_id');
 
   // Build release -> primary artwork lookup
   const releaseArtworkMap = {};
@@ -198,6 +200,8 @@ export function buildDatabase(raw) {
       release,
       category_name: category ? category.name : '',
       perspective_name: perspective ? perspective.name : '',
+      distributor_name: distributorIndex[song.distributor_id]?.name || '',
+      label_name: labelIndex[song.label_id]?.name || '',
       stats: stats || { word_count: 0, unique_word_count: 0, top_words_json: [], featured_vocalist_count: 0 },
       lyrics_text: lyric ? lyric.lyrics_text : '',
       credits,
@@ -239,6 +243,8 @@ export function buildDatabase(raw) {
       perspectiveIndex,
       statsIndex,
       lyricsIndex,
+      distributorIndex,
+      labelIndex,
     },
     meta: {
       years,
@@ -385,6 +391,13 @@ export function applyFilters(songs, filters) {
     if (filters.keys && filters.keys.length > 0) {
       if (!filters.keys.includes(song.key)) return false;
     }
+    if (filters.distributors && filters.distributors.length > 0) {
+      if (!filters.distributors.includes(song.distributor_id)) return false;
+    }
+    if (filters.labels && filters.labels.length > 0) {
+      const labelValue = song.label_id || '__independent__';
+      if (!filters.labels.includes(labelValue)) return false;
+    }
     if (filters.isPublished !== null && filters.isPublished !== undefined) {
       if (song.is_published !== filters.isPublished) return false;
     }
@@ -416,6 +429,9 @@ export function applyFilters(songs, filters) {
         String(song.perspective_name || ''),
         String(song.release?.title || ''),
         String(song.release?.release_type || ''),
+        String(song.distributor_name || ''),
+        String(song.label_name || ''),
+        String(song.upload_type || ''),
         ...(song.credits || []).map((c) => String(c.person?.name || '')),
         ...(song.credits || []).map((c) => String(c.role?.name || '').replace(/_/g, ' ')),
       ].join(' ').toLowerCase();

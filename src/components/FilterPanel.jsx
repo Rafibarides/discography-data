@@ -161,6 +161,40 @@ export default function FilterPanel({
             </div>
           </Section>
 
+          <Section title="Distributor">
+            <div className="filter-chips">
+              {db.distributors.map((d) => (
+                <Chip
+                  key={d.distributor_id}
+                  label={d.name}
+                  active={filters.distributors.includes(d.distributor_id)}
+                  onClick={() => toggleArrayFilter('distributors', d.distributor_id)}
+                  count={db.songs.filter((s) => s.distributor_id === d.distributor_id).length}
+                />
+              ))}
+            </div>
+          </Section>
+
+          <Section title="Label / Independent">
+            <div className="filter-chips">
+              <Chip
+                label="Independent"
+                active={filters.labels.includes('__independent__')}
+                onClick={() => toggleArrayFilter('labels', '__independent__')}
+                count={db.songs.filter((s) => !s.label_id).length}
+              />
+              {db.labels.map((l) => (
+                <Chip
+                  key={l.label_id}
+                  label={l.name}
+                  active={filters.labels.includes(l.label_id)}
+                  onClick={() => toggleArrayFilter('labels', l.label_id)}
+                  count={db.songs.filter((s) => s.label_id === l.label_id).length}
+                />
+              ))}
+            </div>
+          </Section>
+
           <Section title="Featured Vocalist">
             <div className="filter-chips scrollable">
               {featuredVocalists.map((p) => {

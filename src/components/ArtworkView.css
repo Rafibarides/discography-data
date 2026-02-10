@@ -131,16 +131,58 @@
   color: var(--text-tertiary);
 }
 
-/* Detail panel (shown below grid when an artwork is selected) */
-
-.artwork-detail-panel {
+/* Overlay that covers the viewport */
+.artwork-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-modal);
   display: flex;
-  gap: 20px;
-  padding: 16px;
-  background: var(--bg-card);
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Detail panel centered in overlay */
+.artwork-detail-panel {
+  position: relative;
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
-  border-radius: var(--radius-md);
-  margin-top: 4px;
+  border-radius: var(--radius-lg);
+  max-width: 600px;
+  width: 90%;
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.artwork-detail-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+  z-index: 1;
+}
+
+.artwork-detail-close:hover {
+  color: var(--text-primary);
 }
 
 .artwork-detail-img-wrap {
@@ -172,6 +214,7 @@
   flex-direction: column;
   gap: 4px;
   padding-top: 4px;
+  min-width: 0;
 }
 
 .artwork-detail-info h4 {
@@ -245,5 +288,10 @@
   .artwork-detail-panel {
     flex-direction: column;
     align-items: center;
+  }
+
+  .artwork-detail-img {
+    width: 180px;
+    height: 180px;
   }
 }
