@@ -1,11 +1,35 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useCallback } from 'react';
 import { CATEGORY_COLORS } from '../utils/constants';
 import { formatDuration, getKeyQuality } from '../utils/helpers';
 import { computeWordStats } from '../utils/analytics';
 import { jsPDF } from 'jspdf';
 import './SongDetail.css';
 
-export default function SongDetail({ song, db, onClose, onPersonSelect }) {
+export default function SongDetail({ song, songs = [], db, onClose, onNavigate, onPersonSelect }) {
+  const currentIndex = useMemo(
+    () => songs.findIndex((s) => s.song_id === song.song_id),
+    [songs, song.song_id]
+  );
+  const hasPrev = currentIndex > 0;
+  const hasNext = currentIndex >= 0 && currentIndex < songs.length - 1;
+
+  const goPrev = useCallback(() => {
+    if (hasPrev && onNavigate) onNavigate(songs[currentIndex - 1]);
+  }, [hasPrev, onNavigate, songs, currentIndex]);
+
+  const goNext = useCallback(() => {
+    if (hasNext && onNavigate) onNavigate(songs[currentIndex + 1]);
+  }, [hasNext, onNavigate, songs, currentIndex]);
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+      if (e.key === 'Escape') { e.preventDefault(); onClose(); }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [goPrev, goNext, onClose]);
   const wordStats = useMemo(() => {
     if (song.stats?.word_count > 0) {
       return {
@@ -108,6 +132,31 @@ export default function SongDetail({ song, db, onClose, onPersonSelect }) {
             </div>
           </div>
           <div className="detail-header-actions">
+            {songs.length > 1 && (
+              <div className="detail-nav-arrows">
+                <button
+                  className="detail-nav-btn"
+                  onClick={goPrev}
+                  disabled={!hasPrev}
+                  title="Previous song (Left arrow)"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+                <span className="detail-nav-pos">{currentIndex + 1}/{songs.length}</span>
+                <button
+                  className="detail-nav-btn"
+                  onClick={goNext}
+                  disabled={!hasNext}
+                  title="Next song (Right arrow)"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </div>
+            )}
             <button className="btn-secondary" onClick={handleDownloadPDF}>PDF</button>
             <button className="modal-close" onClick={onClose}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

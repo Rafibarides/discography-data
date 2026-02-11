@@ -13,6 +13,7 @@ import LyricSearch from './components/LyricSearch';
 import ExportPanel from './components/ExportPanel';
 import HeatmapView from './components/HeatmapView';
 import ArtworkView from './components/ArtworkView';
+import GraphView from './components/GraphView';
 import SettingsModal from './components/SettingsModal';
 import './App.css';
 
@@ -146,6 +147,13 @@ export default function App() {
               onPersonSelect={setSelectedPerson}
             />
           )}
+          {viewMode === VIEW_MODES.GRAPH && (
+            <GraphView
+              songs={filteredSongs}
+              db={db}
+              onSongSelect={setSelectedSong}
+            />
+          )}
           {viewMode === VIEW_MODES.HEATMAP && (
             <HeatmapView
               songs={filteredSongs}
@@ -175,8 +183,10 @@ export default function App() {
       {selectedSong && (
         <SongDetail
           song={selectedSong}
+          songs={filteredSongs}
           db={db}
           onClose={() => setSelectedSong(null)}
+          onNavigate={setSelectedSong}
           onPersonSelect={(p) => {
             setSelectedSong(null);
             setSelectedPerson(p);

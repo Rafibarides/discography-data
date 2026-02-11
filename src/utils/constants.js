@@ -79,6 +79,7 @@ export const CACHE_MAX_AGE = 1000 * 60 * 60 * 24;
 
 export const VIEW_MODES = {
   GRID: 'grid',
+  GRAPH: 'graph',
   HEATMAP: 'heatmap',
   STATS: 'stats',
   TRENDS: 'trends',
