@@ -80,7 +80,7 @@ export default function SongGrid({ songs, allSongs, display, db, onSongSelect, o
   const sortedGroups = useMemo(() => {
     const entries = Object.entries(grouped);
     if (display.groupBy === 'year') {
-      entries.sort((a, b) => Number(a[0]) - Number(b[0]));
+      entries.sort((a, b) => Number(b[0]) - Number(a[0]));
     }
     return entries;
   }, [grouped, display.groupBy]);
