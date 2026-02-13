@@ -370,10 +370,16 @@ export function getTrendData(db, metric) {
         }
         break;
       case 'featured_count':
-        value = yearSongs.filter((s) => s.stats?.has_featured_vocalist || s.stats?.featured_vocalist_count > 0).length;
+        {
+          const count = yearSongs.filter((s) => s.stats?.has_featured_vocalist || s.stats?.featured_vocalist_count > 0).length;
+          value = yearSongs.length ? Math.round((count / yearSongs.length) * 100) : 0;
+        }
         break;
       case 'explicit_count':
-        value = yearSongs.filter((s) => s.is_explicit).length;
+        {
+          const count = yearSongs.filter((s) => s.is_explicit).length;
+          value = yearSongs.length ? Math.round((count / yearSongs.length) * 100) : 0;
+        }
         break;
       default:
         value = yearSongs.length;
@@ -392,10 +398,10 @@ export function getCategoryTrendData(db) {
 
   categories.forEach((cat) => {
     series[cat] = years.map((year) => {
-      const count = db.songs.filter(
-        (s) => s.year === year && s.category_name === cat
-      ).length;
-      return { year, value: count };
+      const yearSongs = db.songs.filter((s) => s.year === year);
+      const count = yearSongs.filter((s) => s.category_name === cat).length;
+      const value = yearSongs.length ? Math.round((count / yearSongs.length) * 100) : 0;
+      return { year, value };
     });
   });
 

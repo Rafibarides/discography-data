@@ -8,10 +8,12 @@ const METRIC_OPTIONS = [
   { value: 'avg_word_count', label: 'Avg Word Count' },
   { value: 'avg_duration', label: 'Avg Duration (sec)' },
   { value: 'avg_bpm', label: 'Avg BPM' },
-  { value: 'featured_count', label: 'Featured Collaborations' },
-  { value: 'explicit_count', label: 'Explicit Songs' },
+  { value: 'featured_count', label: 'Featured Collaborations (%)' },
+  { value: 'explicit_count', label: 'Explicit Songs (%)' },
   { value: 'categories', label: 'Categories Over Time' },
 ];
+
+const PERCENTAGE_METRICS = ['featured_count', 'explicit_count', 'categories'];
 
 const CHART_W = 700;
 const CHART_H = 300;
@@ -56,7 +58,7 @@ export default function TrendChart({ db }) {
         >
           {metric === 'categories' && categoryData
             ? renderCategoryChart(categoryData, innerW, innerH, PAD)
-            : singleData && renderSingleChart(singleData, innerW, innerH, PAD)
+            : singleData && renderSingleChart(singleData, innerW, innerH, PAD, PERCENTAGE_METRICS.includes(metric))
           }
         </svg>
       </div>
@@ -75,10 +77,11 @@ export default function TrendChart({ db }) {
   );
 }
 
-function renderSingleChart(data, w, h, pad) {
+function renderSingleChart(data, w, h, pad, isPercentage = false) {
   if (!data.length) return null;
-  const maxVal = Math.max(...data.map((d) => d.value), 1);
+  const maxVal = isPercentage ? 100 : Math.max(...data.map((d) => d.value), 1);
   const xStep = data.length > 1 ? w / (data.length - 1) : w / 2;
+  const suffix = isPercentage ? '%' : '';
 
   const points = data.map((d, i) => ({
     x: pad.left + i * xStep,
@@ -96,7 +99,7 @@ function renderSingleChart(data, w, h, pad) {
         return (
           <g key={pct}>
             <line x1={pad.left} y1={y} x2={pad.left + w} y2={y} stroke="#222" strokeWidth="1" />
-            <text x={pad.left - 6} y={y + 4} textAnchor="end" fill="#666" fontSize="10">{val}</text>
+            <text x={pad.left - 6} y={y + 4} textAnchor="end" fill="#666" fontSize="10">{val}{suffix}</text>
           </g>
         );
       })}
@@ -108,7 +111,7 @@ function renderSingleChart(data, w, h, pad) {
           <circle cx={p.x} cy={p.y} r="4" fill="#4A7BFF" />
           <circle cx={p.x} cy={p.y} r="6" fill="none" stroke="#4A7BFF" strokeWidth="1" opacity="0.3" />
           <text x={p.x} y={pad.top + h + 20} textAnchor="middle" fill="#888" fontSize="11">{p.year}</text>
-          <text x={p.x} y={p.y - 10} textAnchor="middle" fill="#ccc" fontSize="10" fontWeight="500">{p.value}</text>
+          <text x={p.x} y={p.y - 10} textAnchor="middle" fill="#ccc" fontSize="10" fontWeight="500">{p.value}{suffix}</text>
         </g>
       ))}
     </g>
@@ -119,8 +122,7 @@ function renderCategoryChart(catData, w, h, pad) {
   const { years, series } = catData;
   if (!years.length) return null;
 
-  const allValues = Object.values(series).flat().map((d) => d.value);
-  const maxVal = Math.max(...allValues, 1);
+  const maxVal = 100;
   const xStep = years.length > 1 ? w / (years.length - 1) : w / 2;
 
   return (
@@ -131,7 +133,7 @@ function renderCategoryChart(catData, w, h, pad) {
         return (
           <g key={pct}>
             <line x1={pad.left} y1={y} x2={pad.left + w} y2={y} stroke="#222" strokeWidth="1" />
-            <text x={pad.left - 6} y={y + 4} textAnchor="end" fill="#666" fontSize="10">{val}</text>
+            <text x={pad.left - 6} y={y + 4} textAnchor="end" fill="#666" fontSize="10">{val}%</text>
           </g>
         );
       })}
